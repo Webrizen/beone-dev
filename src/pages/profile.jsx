@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/profile.css';
 import {
   Container,
@@ -21,9 +21,12 @@ import { AccountCircle, LocationOn, Phone, Email, Description } from '@mui/icons
 
 const Profile = () => {
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
   const handleOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -33,23 +36,48 @@ const Profile = () => {
     // Handle form submission here
   };
 
+  useEffect(() => {
+    // Simulating API call to fetch user data
+    const fetchUserData = async () => {
+      try {
+        // Perform API call and set the fetched user data to the state
+        const userData = {
+          firstName: 'John',
+          lastName: 'Doe',
+          title: 'Medical Patient',
+          address: '123 Medical Street, City',
+          phone: '+1 123-456-7890',
+          email: 'john.doe@example.com',
+          diagnosis: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+          treatment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+          medications: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        };
+        setUser(userData);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <>
       <Navbar />
       <div className="Profile">
-        <Container maxWidth="md" className='cont-MUI'>
+        <Container maxWidth="md" className="cont-MUI">
           <Paper elevation={3} sx={{ padding: '2rem' }} className="Bg-cont">
             <Grid container spacing={4} alignItems="center" className="BG-profile">
-              <Grid item className='GridProfile-MUI'>
+              <Grid item className="GridProfile-MUI">
                 <Avatar sx={{ width: 150, height: 150 }}>
                   <AccountCircle sx={{ width: '100%', height: '100%' }} />
                 </Avatar>
               </Grid>
-              <Grid item className='GridProfile-MUI'>
+              <Grid item className="GridProfile-MUI">
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                  John Doe
+                  {user?.firstName} {user?.lastName}
                 </Typography>
-                <Typography variant="body1">Medical Patient</Typography>
+                <Typography variant="body1">{user?.title}</Typography>
                 <Button variant="text" onClick={handleOpen}>
                   Edit Profile
                 </Button>
@@ -71,7 +99,7 @@ const Profile = () => {
                             label="Profile Name"
                             variant="outlined"
                             fullWidth
-                            defaultValue="John Doe"
+                            defaultValue={`${user?.firstName} ${user?.lastName}`}
                           />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -79,7 +107,7 @@ const Profile = () => {
                             label="Title"
                             variant="outlined"
                             fullWidth
-                            defaultValue="Medical Patient"
+                            defaultValue={user?.title}
                           />
                         </Grid>
                         <Grid item xs={12}>
@@ -87,7 +115,7 @@ const Profile = () => {
                             label="Address"
                             variant="outlined"
                             fullWidth
-                            defaultValue="123 Medical Street, City"
+                            defaultValue={user?.address}
                           />
                         </Grid>
                         <Grid item xs={12}>
@@ -95,7 +123,7 @@ const Profile = () => {
                             label="Profile Image"
                             variant="outlined"
                             fullWidth
-                            type='file'
+                            type="file"
                           />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -103,7 +131,7 @@ const Profile = () => {
                             label="Phone"
                             variant="outlined"
                             fullWidth
-                            defaultValue="+1 123-456-7890"
+                            defaultValue={user?.phone}
                           />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -111,7 +139,7 @@ const Profile = () => {
                             label="Email"
                             variant="outlined"
                             fullWidth
-                            defaultValue="john.doe@example.com"
+                            defaultValue={user?.email}
                           />
                         </Grid>
                         <Grid item xs={12}>
@@ -119,7 +147,7 @@ const Profile = () => {
                             label="Diagnosis"
                             variant="outlined"
                             fullWidth
-                            defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                            defaultValue={user?.diagnosis}
                           />
                         </Grid>
                         <Grid item xs={12}>
@@ -127,7 +155,7 @@ const Profile = () => {
                             label="Treatment"
                             variant="outlined"
                             fullWidth
-                            defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                            defaultValue={user?.treatment}
                           />
                         </Grid>
                         <Grid item xs={12}>
@@ -135,7 +163,7 @@ const Profile = () => {
                             label="Medications"
                             variant="outlined"
                             fullWidth
-                            defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                            defaultValue={user?.medications}
                           />
                         </Grid>
                       </Grid>
@@ -160,7 +188,7 @@ const Profile = () => {
                         <LocationOn />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Address" secondary="123 Medical Street, City" />
+                    <ListItemText primary="Address" secondary={user?.address} />
                   </ListItem>
                   <ListItem disablePadding>
                     <ListItemAvatar>
@@ -168,7 +196,7 @@ const Profile = () => {
                         <Phone />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Phone" secondary="+1 123-456-7890" />
+                    <ListItemText primary="Phone" secondary={user?.phone} />
                   </ListItem>
                   <ListItem disablePadding>
                     <ListItemAvatar>
@@ -176,7 +204,7 @@ const Profile = () => {
                         <Email />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Email" secondary="john.doe@example.com" />
+                    <ListItemText primary="Email" secondary={user?.email} />
                   </ListItem>
                 </List>
               </Grid>
@@ -191,10 +219,7 @@ const Profile = () => {
                         <Description />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText
-                      primary="Diagnosis"
-                      secondary="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    />
+                    <ListItemText primary="Diagnosis" secondary={user?.diagnosis} />
                   </ListItem>
                   <ListItem disablePadding>
                     <ListItemAvatar>
@@ -202,10 +227,7 @@ const Profile = () => {
                         <Description />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText
-                      primary="Treatment"
-                      secondary="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    />
+                    <ListItemText primary="Treatment" secondary={user?.treatment} />
                   </ListItem>
                   <ListItem disablePadding>
                     <ListItemAvatar>
@@ -213,10 +235,7 @@ const Profile = () => {
                         <Description />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText
-                      primary="Medications"
-                      secondary="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    />
+                    <ListItemText primary="Medications" secondary={user?.medications} />
                   </ListItem>
                 </List>
               </Grid>
